@@ -13,6 +13,7 @@ namespace BussinessLogicLayer.Dtos.ProductDtos
         public bool IsActive { get; set; }
 
         public string Name { get; set; }
+        public string Sku { get; set; }
         public float Price { get; set; }
         public float Weight { get; set; }
         public string Description { get; set; }

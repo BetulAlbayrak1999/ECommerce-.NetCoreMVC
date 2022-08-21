@@ -21,7 +21,7 @@ namespace BussinessLogicLayer.Validations.FluentValidations.ProductValidations
 
             RuleFor(x => x.Stoke).NotEmpty().GreaterThanOrEqualTo(0);
 
-            RuleFor(x => x.Discount_Percentage).NotEmpty().GreaterThanOrEqualTo(0);
+            RuleFor(x => x.Discount_Percentage).NotEmpty().LessThan(100).GreaterThanOrEqualTo(0);
         }
     }
 }

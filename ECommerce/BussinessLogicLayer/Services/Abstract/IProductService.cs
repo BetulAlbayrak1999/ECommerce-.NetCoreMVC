@@ -1,4 +1,5 @@
 ﻿using BussinessLogicLayer.Configrations.Responses;
+using BussinessLogicLayer.Dtos.CategoryDtos;
 using BussinessLogicLayer.Dtos.ProductDtos;
 using DataAccessLayer.Domains;
 using System;
@@ -26,5 +27,6 @@ namespace BussinessLogicLayer.Services.Abstract
         public Task<CommandResponse> CreateAsync(CreateProductRequestDto item);
         public Task<GetProductRequestDto> GetByIdAsync(Guid Id);
 
+        public Task<IEnumerable<GetAllCategoryRequestDto>> GetAllActivatedCategory();
     }
 }

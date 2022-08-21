@@ -33,6 +33,8 @@ namespace BussinessLogicLayer.Mappers
 
             CreateMap<GetAllCategoryRequestDto, Category>().ReverseMap();
 
+            CreateMap<GetCategoryRequestDto, UpdateCategoryRequestDto>().ReverseMap();
+
             #endregion
 
             #region Product
@@ -44,6 +46,9 @@ namespace BussinessLogicLayer.Mappers
             CreateMap<GetProductRequestDto, Product>().ReverseMap();
 
             CreateMap<GetAllProductRequestDto, Product>().ReverseMap();
+
+            CreateMap<GetProductRequestDto, UpdateProductRequestDto>().ReverseMap();
+
 
             #endregion
 

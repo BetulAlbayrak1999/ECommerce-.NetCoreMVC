@@ -9,6 +9,7 @@ namespace BussinessLogicLayer.Dtos.ProductDtos
 {
     public class GetProductRequestDto
     {
+        public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public bool IsActive { get; set; }

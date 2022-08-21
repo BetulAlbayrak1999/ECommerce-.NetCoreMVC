@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BussinessLogicLayer.Configrations.Exceptions;
 using BussinessLogicLayer.Configrations.Responses;
+using BussinessLogicLayer.Dtos.CategoryDtos;
 using BussinessLogicLayer.Dtos.ProductDtos;
 using BussinessLogicLayer.Services.Abstract;
 using BussinessLogicLayer.Validations.FluentValidations.ProductValidations;
@@ -18,11 +19,13 @@ namespace BussinessLogicLayer.Services.Concrete
     {
         #region Field and Ctor
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryService _categoryService;
         private readonly IMapper _autoMapper;
-        public ProductService(IMapper autoMapper, IProductRepository ProductRepository) : base(autoMapper, ProductRepository)
+        public ProductService(IMapper autoMapper, IProductRepository ProductRepository, ICategoryService categoryService) : base(autoMapper, ProductRepository)
         {
             _autoMapper = autoMapper;
             _productRepository = ProductRepository;
+            _categoryService = categoryService;
         }
 
         #endregion
@@ -48,6 +51,22 @@ namespace BussinessLogicLayer.Services.Concrete
             }
         }
         #endregion
+
+        #region getActivatedCategories
+        public async Task<IEnumerable<GetAllCategoryRequestDto>> GetAllActivatedCategory()
+        {
+            try
+            {
+                var categories = await _categoryService.GetAllActivatedAsync();
+                return categories;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
 
 
         #region UnActivate
@@ -173,6 +192,12 @@ namespace BussinessLogicLayer.Services.Concrete
             {
                 if (item is not null)
                 {
+
+                    item.Sku = GenerateString(7);
+                    var discount = item.Price * item.Discount_Percentage / 100;
+                    if(discount > 0)
+                        item.Price = item.Price - discount;
+
                     //validation
                     var validator = new CreateProductRequestValidator();
                     validator.Validate(item).throwIfValidationException();
@@ -192,6 +217,32 @@ namespace BussinessLogicLayer.Services.Concrete
             catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
+        private string GenerateString(int length)
+        {
+            // Creating object of random class
+            Random rand = new Random();
+
+            // Choosing the size of string
+            // Using Next() string
+            int stringlen = rand.Next(length, length);
+            int randValue;
+            string str = "";
+            char letter;
+            for (int i = 0; i < stringlen; i++)
+            {
+
+                // Generating a random number.
+                randValue = rand.Next(0, 26);
+
+                // Generating random character by converting
+                // the random number into character.
+                letter = Convert.ToChar(randValue + 65);
+
+                // Appending the letter to string.
+                str = str + letter;
+            }
+            return str;
+        }
         #endregion
 
         #region GetByIdAsync
@@ -208,8 +259,6 @@ namespace BussinessLogicLayer.Services.Concrete
                         return mappedItem;
                     }
                     return null;
-
-                { return null; }
 
             }
             catch (Exception ex) { return null; }
