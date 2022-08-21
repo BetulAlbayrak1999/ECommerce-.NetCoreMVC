@@ -18,7 +18,7 @@ namespace BussinessLogicLayer.Validations.FluentValidations.ProductValidations
 
             RuleFor(x => x.Price).GreaterThanOrEqualTo(0);
 
-            //RuleFor(x => x.CategoryId).NotEmpty();
+            RuleFor(x => x.CategoryId).NotEmpty();
 
             RuleFor(x => x.Stoke).NotEmpty().GreaterThanOrEqualTo(0);
 

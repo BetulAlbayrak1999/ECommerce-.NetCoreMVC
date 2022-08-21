@@ -1,0 +1,56 @@
+﻿@model BussinessLogicLayer.Dtos.OrderDtos.CreateOrderRequestDto
+
+@{
+    ViewData["Title"] = "Create a New Order";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h1>Create a New Order</h1>
+<div>
+   @if(ViewBag.ex != null)
+   {
+        @foreach(var ex in ViewBag.ex)
+        {
+             <span class="text-danger" >@ex</span>
+        }
+   }  
+</div>
+<div>
+    <div>
+        <script src="~/jquery/jquery.min.js"></script>
+        <script src="~/jquery-validate/jquery.validate.min.js"></script>
+        <script src="~/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+             <div>
+                 @Html.Label("Category")
+                @Html.DropDownListFor(x=> x.ProductId, (List<SelectListItem>)ViewBag.products, new { @class="form-control"})
+                <br />
+            </div> 
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form- control"  required/>
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+           
+            <div>
+                 @Html.Label("Category")
+                @Html.DropDownListFor(x=> x.ApplicationUserId, (List<SelectListItem>)ViewBag.applicationUsers, new { @class="form-control"})
+                <br />
+
+            </div> 
+            <div class="form-group">
+            <button type="submit" class=" btn btn-primary d-block mt-4">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+</div>

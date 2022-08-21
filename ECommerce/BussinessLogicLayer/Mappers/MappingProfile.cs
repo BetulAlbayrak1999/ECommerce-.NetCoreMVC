@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BussinessLogicLayer.Dtos.CategoryDtos;
+using BussinessLogicLayer.Dtos.OrderDtos;
 using BussinessLogicLayer.Dtos.ProductDtos;
 using BussinessLogicLayer.ViewModels.AuthViewModels;
 using DataAccessLayer.Domains;
@@ -49,9 +50,21 @@ namespace BussinessLogicLayer.Mappers
 
             CreateMap<GetProductRequestDto, UpdateProductRequestDto>().ReverseMap();
 
-
             #endregion
 
+            #region Order
+
+            CreateMap<CreateOrderRequestDto, Order>().ReverseMap();
+
+            CreateMap<UpdateOrderRequestDto, Order>().ReverseMap();
+
+            CreateMap<GetOrderRequestDto, Order>().ReverseMap();
+
+            CreateMap<GetAllOrderRequestDto, Order>().ReverseMap();
+
+            CreateMap<GetOrderRequestDto, UpdateOrderRequestDto>().ReverseMap();
+
+            #endregion
         }
 
     }

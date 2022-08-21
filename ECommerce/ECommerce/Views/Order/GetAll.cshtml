@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BussinessLogicLayer.Dtos.OrderDtos.GetAllOrderRequestDto>
+
+@{
+    ViewData["Title"] = "Get All Orders";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h1>Get All Orders</h1>
+
+
+<table class="table table-striped mt-4">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th>Order Number</th>
+            <th>IsActive</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderNo</td>
+                <td>@item.IsActive</td>
+                <td>
+                    <a asp-action="Update" asp-controller="Order" class="btn btn-warning" asp-route-Id="@item.Id">Update</a>
+                    <a asp-action="GetById" asp-controller="Order" class="btn btn-secondary" asp-route-Id="@item.Id">Details</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

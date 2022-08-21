@@ -1,19 +1,22 @@
 ﻿using AutoMapper;
-using BussinessLogicLayer.Dtos.CategoryDtos;
+using BussinessLogicLayer.Dtos.OrderDtos;
 using BussinessLogicLayer.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Controllers
 {
-    public class CategoryController : Controller
+    public class OrderController : Controller
     {
-        private readonly ICategoryService _categoryService;
+        private readonly IOrderService _orderService;
         private readonly IMapper _autoMapper;
-        public CategoryController(ICategoryService categoryService, IMapper autoMapper)
+        public OrderController(IOrderService OrderService, IMapper autoMapper)
         {
-            _categoryService = categoryService;
+            _orderService = OrderService;
             _autoMapper = autoMapper;
         }
 
@@ -38,7 +41,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.GetAllActivatedAsync();
+                var result = await _orderService.GetAllActivatedAsync();
                 return View(result);
 
             }
@@ -55,7 +58,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.GetAllAsync();
+                var result = await _orderService.GetAllAsync();
                 if (result is not null)
                     return View(result);
                 return RedirectToAction("Error", "Home");
@@ -74,7 +77,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.GetAllUnActivatedAsync();
+                var result = await _orderService.GetAllUnActivatedAsync();
                 return View(result);
 
             }
@@ -92,7 +95,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.DeleteAsync(Id);
+                var result = await _orderService.DeleteAsync(Id);
                 return RedirectToAction("Index");
 
             }
@@ -120,11 +123,11 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCategoryRequestDto model)
+        public async Task<IActionResult> Create(CreateOrderRequestDto model)
         {
             try
             {
-                var result = await _categoryService.CreateAsync(model);
+                var result = await _orderService.CreateAsync(model);
                 if (result is not null)
                     return RedirectToAction("GetAll");
                 return View(model);
@@ -143,11 +146,11 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.GetByIdAsync(Id);
+                var result = await _orderService.GetByIdAsync(Id);
                 if (result == null)
                     return RedirectToAction("Error", "Home");
-                var viewModel = _autoMapper.Map<UpdateCategoryRequestDto>(result);
-               
+                var viewModel = _autoMapper.Map<UpdateOrderRequestDto>(result);
+
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -160,11 +163,33 @@ namespace ECommerce.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateCategoryRequestDto model)
+        public async Task<IActionResult> Update(UpdateOrderRequestDto model)
         {
             try
             {
-                var result = await _categoryService.UpdateAsync(model);
+                var productDB = await _orderService.GetAllActivatedProduct();
+                if (productDB == null)
+                    return View("Index");
+                List<SelectListItem> products = (from x in productDB
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.Name,
+                                                       Value = x.Id.ToString()
+                                                   }).ToList();
+                ViewBag.products = products;
+
+                var applicationUserDB = await _orderService.GetAllActivatedApplicationUser();
+                if (applicationUserDB == null)
+                    return View("Index");
+                List<SelectListItem> applicationUsers = (from x in applicationUserDB
+                                                         select new SelectListItem
+                                                         {
+                                                             Text = x.Name,
+                                                             Value = x.Id.ToString()
+                                                         }).ToList();
+                ViewBag.applicationUsers = applicationUsers;
+
+                var result = await _orderService.UpdateAsync(model);
                 if (result.Status == false)
                     return RedirectToAction("Error", "Home");
 
@@ -183,7 +208,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.GetByIdAsync(Id);
+                var result = await _orderService.GetByIdAsync(Id);
                 if (result == null)
                     return RedirectToAction("Error", "Home");
                 return View(result);
@@ -201,7 +226,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.ActivateAsync(Id);
+                var result = await _orderService.ActivateAsync(Id);
                 if (result == null)
                     return RedirectToAction("Error", "Home");
                 return RedirectToAction("GetAll");
@@ -219,7 +244,7 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var result = await _categoryService.UnActivateAsync(Id);
+                var result = await _orderService.UnActivateAsync(Id);
                 if (result == null)
                     return NotFound();
                 return RedirectToAction("GetAll");
@@ -232,3 +257,4 @@ namespace ECommerce.Controllers
         #endregion
     }
 }
+

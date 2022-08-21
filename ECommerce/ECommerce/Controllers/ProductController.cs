@@ -190,7 +190,7 @@ namespace ECommerce.Controllers
                 if (result.Status == false)
                     return RedirectToAction("Error", "Home");
 
-                return RedirectToAction("Index");
+                return RedirectToAction("GetAll");
             }
             catch (Exception ex)
             {
