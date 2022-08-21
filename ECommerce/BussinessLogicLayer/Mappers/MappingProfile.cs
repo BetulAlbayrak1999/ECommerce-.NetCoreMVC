@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BussinessLogicLayer.Dtos.ApplicationUserDtos;
 using BussinessLogicLayer.Dtos.CategoryDtos;
 using BussinessLogicLayer.Dtos.OrderDtos;
 using BussinessLogicLayer.Dtos.ProductDtos;
@@ -21,6 +22,16 @@ namespace BussinessLogicLayer.Mappers
             CreateMap<RegisterVM, ApplicationUser>().ReverseMap();
 
             CreateMap<RegisterVM, AuthVM>().ReverseMap();
+
+
+            CreateMap<UpdateApplicationUserRequestDto, ApplicationUser>().ReverseMap();
+
+            CreateMap<GetApplicationUserRequestDto, ApplicationUser>().ReverseMap();
+
+            CreateMap<GetAllApplicationUserRequestDto, ApplicationUser>().ReverseMap();
+
+            CreateMap<GetApplicationUserRequestDto, UpdateApplicationUserRequestDto>().ReverseMap();
+
 
             #endregion
 

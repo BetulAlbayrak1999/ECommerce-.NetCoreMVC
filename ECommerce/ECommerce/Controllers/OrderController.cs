@@ -110,10 +110,31 @@ namespace ECommerce.Controllers
 
 
         #region Create
-        public IActionResult Create()
+        public async Task<ActionResult> Create()
         {
             try
             {
+                var productDB = await _orderService.GetAllActivatedProduct();
+                if (productDB == null)
+                    return View("Index");
+                List<SelectListItem> products = (from x in productDB
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = x.Name,
+                                                     Value = x.Id.ToString()
+                                                 }).ToList();
+                ViewBag.products = products;
+
+                var applicationUserDB = await _orderService.GetAllApplicationUser();
+                if (applicationUserDB == null)
+                    return View("Index");
+                List<SelectListItem> applicationUsers = (from x in applicationUserDB
+                                                         select new SelectListItem
+                                                         {
+                                                             Text = x.FirstName + " " + x.LastName + " " + x.Email,
+                                                             Value = x.Id.ToString()
+                                                         }).ToList();
+                ViewBag.applicationUsers = applicationUsers;
                 return View();
             }
             catch (Exception ex)
@@ -146,6 +167,28 @@ namespace ECommerce.Controllers
         {
             try
             {
+                var productDB = await _orderService.GetAllActivatedProduct();
+                if (productDB == null)
+                    return View("Index");
+                List<SelectListItem> products = (from x in productDB
+                                                 select new SelectListItem
+                                                 {
+                                                     Text = x.Name,
+                                                     Value = x.Id.ToString()
+                                                 }).ToList();
+                ViewBag.products = products;
+
+                var applicationUserDB = await _orderService.GetAllApplicationUser();
+                if (applicationUserDB == null)
+                    return View("Index");
+                List<SelectListItem> applicationUsers = (from x in applicationUserDB
+                                                         select new SelectListItem
+                                                         {
+                                                             Text = x.FirstName + " " + x.LastName + " " + x.Email,
+                                                             Value = x.Id.ToString()
+                                                         }).ToList();
+                ViewBag.applicationUsers = applicationUsers;
+
                 var result = await _orderService.GetByIdAsync(Id);
                 if (result == null)
                     return RedirectToAction("Error", "Home");
@@ -167,28 +210,6 @@ namespace ECommerce.Controllers
         {
             try
             {
-                var productDB = await _orderService.GetAllActivatedProduct();
-                if (productDB == null)
-                    return View("Index");
-                List<SelectListItem> products = (from x in productDB
-                                                   select new SelectListItem
-                                                   {
-                                                       Text = x.Name,
-                                                       Value = x.Id.ToString()
-                                                   }).ToList();
-                ViewBag.products = products;
-
-                var applicationUserDB = await _orderService.GetAllActivatedApplicationUser();
-                if (applicationUserDB == null)
-                    return View("Index");
-                List<SelectListItem> applicationUsers = (from x in applicationUserDB
-                                                         select new SelectListItem
-                                                         {
-                                                             Text = x.Name,
-                                                             Value = x.Id.ToString()
-                                                         }).ToList();
-                ViewBag.applicationUsers = applicationUsers;
-
                 var result = await _orderService.UpdateAsync(model);
                 if (result.Status == false)
                     return RedirectToAction("Error", "Home");

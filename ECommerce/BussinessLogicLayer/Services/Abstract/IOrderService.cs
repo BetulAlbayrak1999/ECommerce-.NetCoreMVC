@@ -29,7 +29,7 @@ namespace BussinessLogicLayer.Services.Abstract
 
         public Task<GetOrderRequestDto> GetByIdAsync(Guid Id);
 
-        public Task<IEnumerable<GetAllApplicationUserRequestDto>> GetAllActivatedApplicationUser();
+        public Task<IEnumerable<GetAllApplicationUserRequestDto>> GetAllApplicationUser();
         public Task<IEnumerable<GetAllProductRequestDto>> GetAllActivatedProduct();
 
     }

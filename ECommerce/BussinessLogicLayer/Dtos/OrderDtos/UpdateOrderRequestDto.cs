@@ -12,7 +12,7 @@ namespace BussinessLogicLayer.Dtos.OrderDtos
         public Guid Id { get; set; }
         public string OrderNo { get; set; }
         public bool IsActive { get; set; }
-
+        public DateTime CreatedDate { get; set; }
         public Guid ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public Guid ProductId { get; set; }

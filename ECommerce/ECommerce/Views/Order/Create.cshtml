@@ -27,7 +27,7 @@
         <form asp-action="Create" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
              <div>
-                 @Html.Label("Category")
+                 @Html.Label("Product")
                 @Html.DropDownListFor(x=> x.ProductId, (List<SelectListItem>)ViewBag.products, new { @class="form-control"})
                 <br />
             </div> 
@@ -39,7 +39,7 @@
 
            
             <div>
-                 @Html.Label("Category")
+                 @Html.Label("User")
                 @Html.DropDownListFor(x=> x.ApplicationUserId, (List<SelectListItem>)ViewBag.applicationUsers, new { @class="form-control"})
                 <br />
 

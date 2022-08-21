@@ -23,10 +23,12 @@ namespace BussinessLogicLayer.Services.Concrete
         private readonly IApplicationUserService _applicationUserService;
         private readonly IProductService _productService;
         private readonly IMapper _autoMapper;
-        public OrderService(IMapper autoMapper, IOrderRepository OrderRepository) : base(autoMapper, OrderRepository)
+        public OrderService(IMapper autoMapper, IOrderRepository OrderRepository, IApplicationUserService applicationUserService, IProductService productService) : base(autoMapper, OrderRepository)
         {
             _autoMapper = autoMapper;
             _orderRepository = OrderRepository;
+            _applicationUserService = applicationUserService;
+            _productService = productService;
         }
 
         #endregion
@@ -211,6 +213,8 @@ namespace BussinessLogicLayer.Services.Concrete
                 {
                     //mapping
                     GetOrderRequestDto mappedItem = _autoMapper.Map<GetOrderRequestDto>(item);
+                    mappedItem.ApplicationUser = _autoMapper.Map<ApplicationUser>(await _applicationUserService.GetByIdAsync(item.ApplicationUserId));
+                    mappedItem.Product = _autoMapper.Map<Product>(await _productService.GetByIdAsync(item.ProductId));
 
                     return mappedItem;
                 }
@@ -223,11 +227,11 @@ namespace BussinessLogicLayer.Services.Concrete
         #endregion
 
         #region getActivatedAppUsers
-        public async Task<IEnumerable<GetAllApplicationUserRequestDto>> GetAllActivatedApplicationUser()
+        public async Task<IEnumerable<GetAllApplicationUserRequestDto>> GetAllApplicationUser()
         {
             try
             {
-                var users = await _applicationUserService.GetAllActivatedAsync();
+                var users = await _applicationUserService.GetAllAsync();
                 return users;
             }
             catch (Exception ex)
@@ -242,7 +246,7 @@ namespace BussinessLogicLayer.Services.Concrete
         {
             try
             {
-                var products = await _productService.GetAllActivatedAsync();
+                var products = await _productService.GetAllAsync();
                 return products;
             }
             catch (Exception ex)
